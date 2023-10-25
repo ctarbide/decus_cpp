@@ -1,3 +1,20 @@
+
+This is just an archaeological study.
+
+Dependencies
+
+    mcpp - https://mcpp.sourceforge.net/
+
+Build instructions:
+
+    nofake build.nw
+
+Edit build.nw to configure.
+
+Original README follows
+
+****************************************************************
+
 This public domain C preprocessor is provided for platforms with naive cpp's
 that cannot handle the abusively large macros in the server and the number of
 defines in the toolkit.  It is currently needed under the following systems:

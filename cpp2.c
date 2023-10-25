@@ -9,6 +9,8 @@
 
 #include	<stdio.h>
 #include	<ctype.h>
+#include	<stdlib.h>
+#include	<string.h>
 #include	"cppdef.h"
 #include	"cpp.h"
 #if HOST == SYS_VMS
@@ -238,6 +240,7 @@ nest_err:	cerror("#%s must be in an #if", token);
 	    printf("#pragma ");
 	    while ((c = get()) != '\n' && c != EOF_CHAR)
 		cput(c);
+	    putchar('\n');
 	    unget();
 	    break;
  
@@ -413,7 +416,7 @@ int		searchlocal;		/* TRUE if #include "file"	*/
 	register char		**incptr;
 #if HOST == SYS_VMS
 #if NWORK < (NAM$C_MAXRSS + 1)
-    << error, NWORK isn't greater than NAM$C_MAXRSS >>
+    << error, NWORK isn"'"t greater than NAM$C_MAXRSS >>
 #endif
 #endif
 	char			tmpname[NWORK];	/* Filename work area	*/

@@ -9,11 +9,21 @@
 
 #include	<stdio.h>
 #include	<ctype.h>
+#include	<stdlib.h>
+#include	<string.h>
 #include	"cppdef.h"
 #include	"cpp.h"
 #if DEBUG && (HOST == SYS_VMS || HOST == SYS_UNIX)
 #include	<signal.h>
-extern int	abort();		/* For debugging		*/
+#endif
+
+#if (HOST == SYS_VMS || HOST == SYS_UNIX)
+void
+signalabort(v)
+int		v;
+{
+	abort();
+}
 #endif
 
 int
@@ -233,7 +243,7 @@ char		*argv[];
 		case 'X':			/* Debug		*/
 		    debug = (isdigit(*ap)) ? atoi(ap) : 1;
 #if (HOST == SYS_VMS || HOST == SYS_UNIX)
-		    signal(SIGINT, abort);	/* Trap "interrupt"	*/
+		    signal(SIGINT, signalabort);	/* Trap "interrupt"	*/
 #endif
 		    fprintf(stderr, "Debug set to %d\n", debug);
 		    break;

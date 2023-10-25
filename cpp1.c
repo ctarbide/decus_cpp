@@ -144,7 +144,7 @@ description
 	are not defined.
 	.p -16
 	-Stext		CPP normally assumes that the size of
-	the target computer's basic variable types is the same as the size
+	the target computer"'"s basic variable types is the same as the size
 	of these types of the host computer.  (This can be overridden
 	when CPP is compiled, however.)  The -S option allows dynamic
 	respecification of these values.  "text" is a string of
@@ -220,15 +220,15 @@ Pre-Defined Variables
 Draft Proposed Ansi Standard Considerations
 
 	The current version of the Draft Proposed Standard
-	explicitly states that "readers are requested not to specify
-	or claim conformance to this draft."  Readers and users
+	explicitly states that '"'readers are requested not to specify
+	or claim conformance to this draft.'"'  Readers and users
 	of Decus CPP should not assume that Decus CPP conforms
 	to the standard, or that it will conform to the actual
 	C Language Standard.
 
 	When CPP is itself compiled, many features of the Draft
 	Proposed Standard that are incompatible with existing
-	preprocessors may be disabled.  See the comments in CPP's
+	preprocessors may be disabled.  See the comments in CPP"'"s
 	source for details.
 
 	The latest version of the Draft Proposed Standard (as reflected
@@ -262,7 +262,7 @@ Draft Proposed Ansi Standard Considerations
 	    "foo" "bar"
 
 	is regarded as the single string "foobar".  (This does not
-	affect CPP's processing but does permit a limited form of
+	affect CPP"'"s processing but does permit a limited form of
 	macro argument substitution into strings as will be discussed.)
 
 	The Standard Committee plans to add token concatenation
@@ -336,6 +336,8 @@ bugs
 
 #include	<stdio.h>
 #include	<ctype.h>
+#include	<stdlib.h>
+#include	<string.h>
 #include	"cppdef.h"
 #include	"cpp.h"
 
@@ -588,7 +590,7 @@ cppmain()
 	 * the start of a line, it counts the number of blank lines that
 	 * have been skipped over.  These are then either output via
 	 * #line records or by outputting explicit blank lines.
- 	 * When expanding tokens within a line, the counter remembers
+	 * When expanding tokens within a line, the counter remembers
 	 * whether a blank/tab has been output.  These are dropped
 	 * at the end of the line, and replaced by a single blank
 	 * within lines.

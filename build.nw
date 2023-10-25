@@ -1,0 +1,127 @@
+
+<<*>>=
+Usage:
+
+    nofake -Rrelease build.nw
+
+    nofake -Rdebug build.nw
+
+@
+
+<<release>>=
+nofake -R'create-dcpp?.c' build.nw
+nofake -R'build' build.nw
+@
+
+<<debug>>=
+nofake -R'create-dcpp?.c DEBUG' build.nw
+nofake -R'build DEBUG' build.nw
+@
+
+Available HOST options (see cppdef.h):
+
+    #define	SYS_UNKNOWN		0
+    #define	SYS_UNIX		1
+    #define	SYS_VMS			2
+    #define	SYS_RSX			3
+    #define	SYS_RT11		4
+    #define	SYS_LATTICE		5
+    #define	SYS_ONYX		6
+    #define	SYS_68000		7
+
+<<configuration: HOST>>=
+SYS_UNIX
+@
+
+<<configuration: int pointer type>>=
+long
+@
+
+<<configuration: unsigned pointer type>>=
+unsigned <<configuration: int pointer type>>
+@
+
+<<configuration: defines>>=
+-DHOST=<<configuration: HOST>> \
+-DINTPTR_T='<<configuration: int pointer type>>' \
+-DUINTPTR_T='<<configuration: unsigned pointer type>>'
+@
+
+<<configuration: defines DEBUG>>=
+<<configuration: defines>> \
+-DDEBUG \
+-DDEBUG_EVAL
+@
+
+<<create-dcpp?.c>>=
+#!/bin/sh
+set -eu
+LC_ALL=C; export LC_ALL
+for i in `seq 1 6`; do
+    mcpp <<mcpp options>> \
+        <<configuration: defines>> \
+        "cpp${i}.c" | uniq | \
+        perl -lpi.bak -e'<<fix includes>>' > "dcpp${i}.c"
+done
+@
+
+<<create-dcpp?.c DEBUG>>=
+#!/bin/sh
+set -eu
+LC_ALL=C; export LC_ALL
+for i in `seq 1 6`; do
+    mcpp <<mcpp options DEBUG>> \
+        <<configuration: defines DEBUG>> \
+        "cpp${i}.c" | uniq | \
+        perl -lpi.bak -e'<<fix includes>>' > "dcpp${i}.c"
+done
+@
+
+Some mcpp options:
+
+    -j: (Silent) Do not output the source line in diagnostics
+    -z: Don't output included files
+    -C: Output comments also
+    -N: Don't predefine any non-standard macros
+    -P: Omit #line
+
+<<mcpp options>>=
+-z -P -j -C
+@
+
+<<mcpp options DEBUG>>=
+-z -j -C
+@
+
+<<fix includes>>=
+s,^#include "/usr/include/(.*?)",#include <$1>,;
+s,^#include ".*/(cppdef|cpp)\.h",#include "${1}.h",;
+@
+
+<<gcc options>>=
+-O2 -ansi -Werror
+@
+
+<<build>>=
+#!/bin/sh
+set -eux
+gcc <<gcc options>> <<configuration: defines>> -c dcpp1.c -o dcpp1.o
+gcc <<gcc options>> <<configuration: defines>> -c dcpp2.c -o dcpp2.o
+gcc <<gcc options>> <<configuration: defines>> -c dcpp3.c -o dcpp3.o
+gcc <<gcc options>> <<configuration: defines>> -c dcpp4.c -o dcpp4.o
+gcc <<gcc options>> <<configuration: defines>> -c dcpp5.c -o dcpp5.o
+gcc <<gcc options>> <<configuration: defines>> -c dcpp6.c -o dcpp6.o
+gcc dcpp1.o dcpp2.o dcpp3.o dcpp4.o dcpp5.o dcpp6.o -o dcpp
+@
+
+<<build DEBUG>>=
+#!/bin/sh
+set -eux
+gcc <<gcc options>> <<configuration: defines DEBUG>> -c dcpp1.c -o dcpp1.o
+gcc <<gcc options>> <<configuration: defines DEBUG>> -c dcpp2.c -o dcpp2.o
+gcc <<gcc options>> <<configuration: defines DEBUG>> -c dcpp3.c -o dcpp3.o
+gcc <<gcc options>> <<configuration: defines DEBUG>> -c dcpp4.c -o dcpp4.o
+gcc <<gcc options>> <<configuration: defines DEBUG>> -c dcpp5.c -o dcpp5.o
+gcc <<gcc options>> <<configuration: defines DEBUG>> -c dcpp6.c -o dcpp6.o
+gcc dcpp1.o dcpp2.o dcpp3.o dcpp4.o dcpp5.o dcpp6.o -o dcpp
+@

@@ -17,6 +17,8 @@
 
 #include	<stdio.h>
 #include	<ctype.h>
+#include	<stdlib.h>
+#include	<string.h>
 #include	"cppdef.h"
 #include	"cpp.h"
 
@@ -637,6 +639,8 @@ register int	c;
 	    value += c1;
 	    c = cget();
 	}
+	if (c == 'l' || c == 'L')	/* Long nonsense?		*/
+	    c = cget();
 	if (c == 'u' || c == 'U')	/* Unsigned nonsense		*/
 	    c = cget();
 	unget();

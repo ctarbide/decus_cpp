@@ -35,7 +35,7 @@
 
 #define	MAC_PARM	0x7F		/* Macro formals start here	*/
 #if PAR_MAC >= 33
-	assertion fails -- PAR_MAC isn't less than 33
+	assertion fails -- PAR_MAC isn"'"t less than 33
 #endif
 #define	LASTPARM	(PAR_MAC - 1)
 
@@ -231,9 +231,3 @@ extern char	*getmem();		/* Get memory or die.		*/
 extern DEFBUF	*lookid();		/* Look for a #define'd thing	*/
 extern DEFBUF	*defendel();		/* Symbol table enter/delete	*/
 extern char	*savestring();		/* Stuff string in malloc mem.	*/
-extern char	*strcpy();
-extern char	*strcat();
-extern char	*strrchr();
-extern char	*strchr();
-extern long	time();
-extern char	*sprintf();		/* Lint needs this		*/

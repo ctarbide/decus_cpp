@@ -19,6 +19,8 @@
 
 #include	<stdio.h>
 #include	<ctype.h>
+#include	<stdlib.h>
+#include	<string.h>
 #include	"cppdef.h"
 #include	"cpp.h"
 
@@ -80,7 +82,7 @@
  * Hex 1F COM_SEP   -- a zero-width whitespace for comment concatenation
  */
 #if TOK_SEP != 0x1E || COM_SEP != 0x1F || DEF_MAGIC != 0x1D
-	<< error type table isn't correct >>
+	<< error type table isn"'"t correct >>
 #endif
 
 #if OK_DOLLAR
@@ -476,7 +478,6 @@ int		size;
  */
 {
 	register char	*result;
-	extern char	*malloc();
 
 	if ((result = malloc((unsigned) size)) == NULL)
 	    cfatal("Out of memory", NULLST);
@@ -900,7 +901,7 @@ char		*arg;			/* Something for the message	*/
 	if (*severity == 'S')
 	    fprintf(stderr, format, arg);
 	else
-	    fprintf(stderr, format, (int) arg);
+	    fprintf(stderr, format, (INTPTR_T) arg);
 	putc('\n', stderr);
 	if ((file = infile) == NULL)
 	    return;				/* At end of file	*/
@@ -943,7 +944,7 @@ int		narg;		/* Single numeric argument		*/
  * Print a normal error message, numeric argument.
  */
 {
-	domsg("IError", format, (char *) narg);
+	domsg("IError", format, (char *) (INTPTR_T) narg);
 	errors++;
 }
 
@@ -975,7 +976,7 @@ int		narg;			/* Single numeric argument	*/
  * A non-fatal error, numeric argument.
  */
 {
-	domsg("IWarning", format, (char *) narg);
+	domsg("IWarning", format, (char *) (INTPTR_T) narg);
 }
 
 
